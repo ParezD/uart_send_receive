@@ -37,10 +37,10 @@ int main() {
         usleep(1000000);
 
         // Read incoming data
-        //int receivedData;
-        //if (read(uart, &receivedData, sizeof(receivedData)) > 0) {
-        //    std::cout << "Received: " << receivedData << std::endl;
-        //}
+        uint8_t receivedData;
+        if (read(uart, &receivedData, sizeof(receivedData)) > 0) {
+            std::cout << "Response: " << static_cast<int>(receivedData) << std::endl;
+        }
     }
 
     close(uart);

@@ -30,15 +30,15 @@ int main() {
     tcsetattr(uart, TCSANOW, &options);
 
     while (true) {
-        //char data = '@';
-        //uint8_t data = 69;
-        //write(uart, &data, sizeof(data));
 
         //Read incoming data
         uint8_t receivedData;
         if (read(uart, &receivedData, sizeof(receivedData)) > 0) {
             std::cout << "Received: " << static_cast<int>(receivedData) << std::endl;
-            //std::cout << "Received: " << receivedData << std::endl;
+
+            uint8_t ans = receivedData*2;
+            std::cout << "Sending back: " << static_cast<int>(ans) << std::endl; 
+            write(uart, &ans, sizeof(ans));
         }
         //usleep(100000);
     }
