@@ -26,21 +26,31 @@ int main() {
     options.c_cflag &= ~CSTOPB;          // 1 stop bit
     options.c_cflag &= ~CSIZE;           // Clear data size bits
     options.c_cflag |= CS8;              // 8 data bits
-    
+ 
+    options.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
+    options.c_oflag &= ~OPOST;
+    options.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
+
     tcsetattr(uart, TCSANOW, &options);
 
     while (true) {
         //char data = '@';
         uint8_t data = 69;
-        write(uart, &data, sizeof(data));
+        write(uart, &data, 1);
         std::cout << "sent " << static_cast<int>(data) << std::endl;
+        //uint8_t nl = 10;
+        //write(uart, &nl, 1);
         usleep(1000000);
 
         // Read incoming data
         uint8_t receivedData;
-        if (read(uart, &receivedData, sizeof(receivedData)) > 0) {
+        if (read(uart, &receivedData, 1) == 1) {
             std::cout << "Response: " << static_cast<int>(receivedData) << std::endl;
         }
+        //uint8_t receivedData;
+        //if (read(uart, &receivedData, 1) > 0) {
+        //    std::cout << "Response: " << static_cast<int>(receivedData) << std::endl;
+        //}
     }
 
     close(uart);
